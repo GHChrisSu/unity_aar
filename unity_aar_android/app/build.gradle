@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        minSdkVersion 22
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+// ---------- 编译并发布AAR (删除旧AAR，编译新AAR，拷贝新AAR至同一目录) ----------
+
+task aarDebug(type: Copy) {
+    // 任务开始
+    println "----------> AAR Debug Task Start <----------"
+
+    // AAR所在的编译路径
+    def buildPath = "/build/outputs/aar/app-debug.aar"
+    // AAR输出到Unity的插件目录
+    def aarOutPath = "D:\\Projects\\unity_aar\\unity_aar_unity\\Assets\\Plugins\\Android"
+
+    // 执行编译AAR脚本（原生脚本）
+    dependsOn 'assembleDebug'
+
+    from buildPath
+    into aarOutPath
+
+    println "----------> AAR Debug Task End <----------"
+}
+
+task aarRelease(type: Copy) {
+    // 任务开始
+    println "----------> AAR Release Task Start <----------"
+
+    // AAR所在的编译路径
+    def buildPath = "/build/outputs/aar/app-release.aar"
+    // AAR输出到Unity的插件目录
+    def aarOutPath = "D:\\Projects\\unity_aar\\unity_aar_unity\\Assets\\Plugins\\Android"
+
+    // 执行编译AAR脚本（原生脚本）
+    dependsOn 'assembleRelease'
+
+    from buildPath
+    into aarOutPath
+
+    println "----------> AAR Release Task End <----------"
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    compile project(':Unity3D')
+}
