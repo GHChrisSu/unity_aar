@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.baize.unity_aar.AppContext;
 import com.baize.unity_aar.utils.CustomActivityManager;
 import com.baize.unity_aar.utils.PageSwitchUtils;
 import com.baize.unity_aar.R;
@@ -32,6 +33,8 @@ public class AndroidActivity extends Activity {
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         //启动广播
         registerReceiver(innerReceiver, intentFilter);
+        //close the start splash
+        AppContext.getInstance().HideSplash();
     }
 
     @Override

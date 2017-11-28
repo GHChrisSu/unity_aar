@@ -5,6 +5,17 @@ public class Call : MonoBehaviour
 {
     string information_ = null;
 
+    private void Start()
+    {
+        using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            using (AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity"))
+            {
+                jo.Call("toAndroidActivity");
+            }
+        }
+    }
+
     void OnGUI()
     {
         //调用显示一个文本为“Hello World!”的Toest
